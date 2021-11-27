@@ -7,11 +7,13 @@ import sys
 import shutil
 
 lang = 'chi_sim'
+if len(sys.argv) > 1:
+    lang = sys.argv[1]
 
 ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 LANGDATA_DIR = os.path.join(ROOT_DIR, 'langdata')
 BASE_DIR = os.path.join(LANGDATA_DIR, lang)
-FONTS_DIR = os.path.join(BASE_DIR, 'fonts')
+FONTS_DIR = os.path.join(ROOT_DIR, 'fonts')
 
 fonts = []
 

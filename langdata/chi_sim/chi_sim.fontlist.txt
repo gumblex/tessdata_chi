@@ -6,10 +6,9 @@ FZSongHei-B07
 FZKai-Z03
 LiSu
 Microsoft YaHei
-Microsoft YaHei Bold
 STXinwei
 SimHei
 SimSun
 Kaigen Sans SC
-Kaigen Serif SC Bold
+Kaigen Serif SC Semi-Bold
 YouYuan
