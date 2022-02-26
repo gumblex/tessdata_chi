@@ -15,6 +15,17 @@ LANGDATA_DIR = os.path.join(ROOT_DIR, 'langdata')
 BASE_DIR = os.path.join(LANGDATA_DIR, lang)
 FONTS_DIR = os.path.join(ROOT_DIR, 'fonts')
 
+TRAINING_BIN = os.path.dirname(shutil.which('tesseract'))
+TESSDATA_PREFIX = os.environ.get(
+    'TESSDATA_PREFIX', '/usr/share/tesseract-ocr/4.00/tessdata')
+
+
+def check_mtime(src, dst):
+    if not os.path.isfile(dst):
+        return True
+    return (os.stat(dst).st_mtime < os.stat(src).st_mtime)
+
+
 fonts = []
 
 fontlist = os.path.join(BASE_DIR, lang + '.fontlist.txt')
@@ -38,9 +49,9 @@ trs = ' '.join('%s.%s.exp0.tr' % (lang, r[1]) for r in fonts)
 
 with open('Makefile', 'w') as w:
     w.write('TRAIN_LANG=%s\n' % lang)
-    w.write('TESSERACT=tesseract\n')
-    w.write('TRAINING_BIN=/usr/bin\n')
-    w.write('TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00/tessdata\n')
+    w.write('TRAINING_BIN=%s\n' % TRAINING_BIN)
+    w.write('TESSERACT=$(TRAINING_BIN)/tesseract\n')
+    w.write('TESSDATA_PREFIX=%s\n' % TESSDATA_PREFIX)
     w.write('\n\n.PHONY: clean\n\n')
     w.write('all: %s.traineddata\n\n' % (lang,))
     # w.write('all: %s.unicharset %s.normproto\n\n' % ((lang,)*2))
@@ -55,7 +66,7 @@ with open('Makefile', 'w') as w:
     w.write('\n\tmv normproto %s.normproto' % lang)
     w.write('\n\n%s.unicharset: unicharset font_properties ' % (lang,))
     w.write(' '.join('%s.%s.exp0.tr' % (lang, x[1]) for x in fonts))
-    w.write('\n\tenv TMPDIR=/media/ssdata/gumble $(TRAINING_BIN)/mftraining -F font_properties -U unicharset -O %s.unicharset %s && \\' % (lang, trs))
+    w.write('\n\tenv $(TRAINING_BIN)/mftraining -F font_properties -U unicharset -O %s.unicharset %s && \\' % (lang, trs))
     w.write('\n\tmv shapetable %s.shapetable && \\' % lang)
     w.write('\n\tmv inttemp %s.inttemp && \\' % lang)
     w.write('\n\tmv pffmtable %s.pffmtable' % lang)
@@ -77,13 +88,13 @@ with open('Makefile', 'w') as w:
 re_bold = re.compile(r'Bold|Heavy|W5|W7|W9|W12|Cu|Da|weight')
 re_serif = re.compile(r'Song|Ming|Sun|Serif|HanaMin', re.I)
 
-if os.path.isfile('font_properties') and os.stat(fontlist).st_mtime < os.stat('font_properties').st_mtime:
-    print('not generating font_properties')
-else:
+if check_mtime(fontlist, 'font_properties'):
     with open('font_properties', 'w') as w:
         for fontname, fontfile in fonts:
             w.write('%s 0 %s 0 %s 0\n' % (
                 fontname,
                 '1' if re_bold.search(fontname) else '0',
-                '1' if re_serif.search(fontname) and not 'fangsong' in fontname.lower() else '0',
+                '1' if re_serif.search(fontname) else '0',
             ))
+else:
+    print('not generating font_properties')

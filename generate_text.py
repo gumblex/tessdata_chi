@@ -16,7 +16,7 @@ random.seed(12345)
 LEFT_PUNCTS = "\"'([{‘“〈《「『【〔"
 RIGHT_PUNCTS = "\"')]}’”〉》」』】〕"
 MIDDLE_PUNCTS = "!&*,./:;?@\\_~·、。々！，：；？—…"
-DIGIT_PUNCTS = ("#$¥", "+-*/×÷=≠≈<>≤≥^", "%°")
+DIGIT_PUNCTS = ("#$¥", "+-*/×÷=≠≈<>≤≥^", "%")
 PUNCT_PATTERN_L = {
     ':': '"\'([{',
     '：': '“〈《「『【〔',
@@ -644,8 +644,12 @@ if __name__ == '__main__':
         char_list = set(load_simplewordlist('wordlist/zht_chars.txt'))
         char_list.add('〇')
         freq1, freq2 = load_wordlist('wordlist/bigramfreq_zht.txt', char_list)
-        additional_list = load_simplewordlist('wordlist/bopomofo.txt')
+        # disable bopomofo, use diacritics in pinyin
+        #additional_list = load_simplewordlist('wordlist/bopomofo.txt')
+        additional_list = load_simplewordlist('wordlist/pinyin.txt')
     eng_words = load_simplewordlist('wordlist/google-10000-english.txt')
     tg = TextGenerator(freq1, freq2, additional_list, eng_words)
     text = tg.generate_text(250000)
     print(text)
+    with open('langdata/eng/eng.training_text', 'r', encoding='utf-8') as f:
+        print(f.read(), end='')

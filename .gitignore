@@ -3,3 +3,5 @@ fonts/*.TTF
 fonts/*.otf
 fonts/*.OTF
 fonts/*.ttc
+fonts/*.TTC
+tessdata/*
