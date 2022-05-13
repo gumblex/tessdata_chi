@@ -1,6 +1,4 @@
-DengXian
 FZFangSong-Z02
-FZHei-B01
 FZShuSong-Z01
 FZSongHei-B07
 LiSu

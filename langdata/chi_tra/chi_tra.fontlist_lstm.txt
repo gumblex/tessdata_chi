@@ -1,32 +1,31 @@
-AR PL UKai HK
-AR PL UMing TW Light
-AR PLMingU20 Light
-CFangSongHK Light
-DFKai-SB
-DFPFangSongW4-B5
-DFPHeiMedium-B5
-DFPMingMedium-B5
-DFPLiSong-Md
-DFPMingMedium-B5
-Droid Sans Fallback
-FZShuSong-Z01
-HanWangLiSuMedium
-HanWangYenLight
-Huiwen-mincho
-Iansui 0.92
-Kaigen Sans TC
-Kaigen Serif TC
-MBeiHK Bold
-MHeiHK Light
-MKaiHK Medium
-MSungHK Medium
-MYuenHK Medium
-Microsoft JhengHei
-Microsoft YaHei
-PMingLiU
-PMingLiU-New
-SimSun
-TW-Kai
-TW-MOE-Li
-cwTeX Q Hei Bold
-cwTeX Q Fangsong Medium
+0.9,AR PL UKai HK
+0.9,AR PL UMing TW Light
+1,AR PLMingU20 Light
+0.8,CFangSongHK Light
+1,DFKai-SB
+0.8,DFPFangSongW4-B5
+1,DFPHeiMedium-B5
+1,DFPMingMedium-B5
+1,DFPLiSong-Md
+0.7,Droid Sans Fallback
+0.7,FZShuSong-Z01
+0.4,HanWangLiSuMedium
+0.6,HanWangYenLight
+0.7,Huiwen-mincho
+0.6,Iansui 0.92
+0.8,Kaigen Sans TC
+0.8,Kaigen Serif TC
+0.5,MBeiHK Bold
+0.9,MHeiHK Light
+0.9,MKaiHK Medium
+0.9,MSungHK Medium
+0.7,MYuenHK Medium
+0.9,Microsoft JhengHei
+0.7,Microsoft YaHei
+1,PMingLiU
+1,PMingLiU-New
+0.7,SimSun
+1,TW-Kai
+0.4,TW-MOE-Li
+0.7,cwTeX Q Hei Bold
+0.8,cwTeX Q Fangsong Medium

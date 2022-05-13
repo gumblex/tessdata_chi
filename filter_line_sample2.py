@@ -95,6 +95,7 @@ if __name__ == '__main__':
         char_list.update(load_simplewordlist(
             os.path.join(script_dir, 'wordlist/zhs_chars.txt')))
         char_list.add('〇')
+        #additional_list = ()
         additional_list = set(''.join(load_simplewordlist(
             os.path.join(script_dir, 'wordlist/pinyin.txt'))))
         char_list.update(additional_list)
@@ -104,6 +105,7 @@ if __name__ == '__main__':
         char_list.update(load_simplewordlist(
             os.path.join(script_dir, 'wordlist/zht_chars.txt')))
         char_list.add('〇')
+        #additional_list = ()
         additional_list = set(''.join(load_simplewordlist(
             os.path.join(script_dir, 'wordlist/bopomofo.txt'))))
         char_list.update(additional_list)
@@ -120,7 +122,7 @@ if __name__ == '__main__':
         (len(x), len(frozenset(x)), x),
     ), reverse=True)
 
-    train_size = 15
+    train_size = 10
     test_size = 1
     last_test = False
     used_lines_train = set()

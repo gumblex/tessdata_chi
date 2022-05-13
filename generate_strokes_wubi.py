@@ -73,3 +73,12 @@ with open('wordlist/original-radical-stroke.txt', 'r', encoding='utf-8') as f:
 
 for k, v in sorted(strokes.items()):
     print(' '.join(map(str, (k,) + v)))
+
+# seen = set()
+# dup = 0
+# for v in strokes.values():
+    # if v in seen:
+        # dup += 1
+    # else:
+        # seen.add(v)
+# print(dup, len(strokes))

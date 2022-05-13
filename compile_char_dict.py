@@ -14,8 +14,8 @@ import collections
 
 base_dir = 'wordlist'
 char_list_files = {
-    'zhs': ('tygfhzb.txt',),
-    'zht': ('tw_cygzb.txt', 'tw_ccygzb.txt', 'hk_cyzzxb.txt')
+    'zhs': ('cn_tygfhzb.txt', 'cn_cyz3500.txt', 'cn_ywjy3500.txt', 'cn_gb2312.txt'),
+    'zht': ('tw_cygzb.txt', 'tw_ccygzb.txt', 'hk_cyzzxb.txt', 'tw_big5changyong.txt')
 }
 exclude_chars = set('氵冫忄阝刂亻扌犭纟糹牜礻衤訁讠釒钅飠饣丬艹宀冖覀罒罓灬爫丨丿乀乁乄乚丶丷亅丄丅丆乛囗')
 
@@ -24,8 +24,13 @@ if len(sys.argv) < 2 or sys.argv[1] == 'zhs':
     other_lang = 'zht'
     conv_file = 'TSCharacters.txt'
     freq_file = 'charfreq_zhs.txt'
-    guarantee_list = (('tygfhzb.txt', 3500),)
-    guarantee_list2 = 'tygfhzb.txt'
+    guarantee_list = (
+        ('cn_tygfhzb.txt', 3500),
+        ('cn_cyz3500.txt', 3500),
+        ('cn_ywjy3500.txt', 3500),
+        ('cn_gb2312.txt', 3755),
+    )
+    guarantee_list2 = 'cn_tygfhzb.txt'
     guarantee_list2_conv = False
 else:
     lang = 'zht'
@@ -34,11 +39,17 @@ else:
     freq_file = 'charfreq_zht.txt'
     guarantee_list = (
         ('tw_cygzb.txt', 5000),
-        ('hk_cyzzxb.txt', 5000)
+        ('hk_cyzzxb.txt', 5000),
+        ('tw_big5changyong.txt', 5401)
     )
-    guarantee_list2 = 'tygfhzb.txt'
+    guarantee_list2 = 'cn_tygfhzb.txt'
     guarantee_list2_conv = True
 
+if len(sys.argv) < 3 or sys.argv[2] == 'lstm':
+    char_num = 8000
+else:
+    exclude_chars.update('彳亍')
+    char_num = 7000
 
 char_lists = {}
 for filenames in char_list_files.values():
@@ -110,7 +121,7 @@ for ch, freq in sorted_chars:
     if status == 1 and freq != last_freq:
         status = 2
     if status == 2:
-        if len(all_chars) >= 8000:
+        if len(all_chars) >= char_num:
             status = 3
         if ch not in guarantee_chars2:
             continue

@@ -636,12 +636,12 @@ def generate_text(freq1, freq2, additional_list, eng_words, total_length=250000)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2 or sys.argv[1] == 'zhs':
-        char_list = set(load_simplewordlist('wordlist/zhs_chars.txt'))
+        char_list = set(load_simplewordlist('wordlist/zhs_chars_7000.txt'))
         char_list.add('〇')
         freq1, freq2 = load_wordlist('wordlist/bigramfreq_zhs.txt', char_list)
         additional_list = load_simplewordlist('wordlist/pinyin.txt')
     else:
-        char_list = set(load_simplewordlist('wordlist/zht_chars.txt'))
+        char_list = set(load_simplewordlist('wordlist/zht_chars_7000.txt'))
         char_list.add('〇')
         freq1, freq2 = load_wordlist('wordlist/bigramfreq_zht.txt', char_list)
         # disable bopomofo, use diacritics in pinyin

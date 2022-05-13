@@ -1,32 +1,32 @@
-AR PL KaitiM GB
-AR PLBaosong2GBK Light
-DengXian
-Droid Sans Fallback
-FZFangSong-Z02
-FZHei-B01
-FZKai-Z03
-FZShuSong-Z01
-FZSong III-Z05
-FZSongHei-B07
-FZSongS-Extended
-FZXiHeiI-Z08
-FZXiYuan-M01
-FZXiaoBiaoSong-B05
-FangSong
-Hiragino Sans GB Light
-Huiwen-mincho
-KaiTi
-Kaigen Sans SC
-Kaigen Serif SC
-LXGW WenKai
-LiSu
-Microsoft YaHei
-STFangsong
-STKaiti
-STSong
-STXihei
-STXinwei
-STZhongsong
-SimHei
-SimSun
-YouYuan
+0.7,AR PL KaitiM GB
+0.7,AR PLBaosong2GBK Light
+0.8,DengXian
+0.8,Droid Sans Fallback
+0.9,FZFangSong-Z02
+1,FZHei-B01
+0.9,FZKai-Z03
+1,FZShuSong-Z01
+1,FZSong III-Z05
+0.8,FZSongHei-B07
+1,FZSongS-Extended
+0.9,FZXiHeiI-Z08
+0.6,FZXiYuan-M01
+0.8,FZXiaoBiaoSong-B05
+0.9,FangSong
+0.6,Hiragino Sans GB Light
+0.3,Huiwen-mincho
+0.9,KaiTi
+0.9,Kaigen Sans SC
+0.8,Kaigen Serif SC
+0.5,LXGW WenKai
+0.4,LiSu
+1,Microsoft YaHei
+1,STFangsong
+0.9,STKaiti
+1,STSong
+0.9,STXihei
+0.4,STXinwei
+0.9,STZhongsong
+1,SimHei
+1,SimSun
+0.6,YouYuan

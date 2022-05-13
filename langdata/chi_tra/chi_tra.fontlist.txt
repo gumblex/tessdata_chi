@@ -1,14 +1,12 @@
 AR PL UKai HK
-AR PL UMing TW Light
-DengXian
+AR PLMingU20 Light
 DFKai-SB
 DFPFangSongW2-B5
 DFPHeiMedium-B5
 FZShuSong-Z01
-HanWangYenLight
-HanaMinA Medium
 MHeiHK Light
 Kaigen Serif TC Semi-Bold
 Microsoft JhengHei
+MYuenHK Medium
 PMingLiU
 PMingLiU-New
