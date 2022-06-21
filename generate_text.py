@@ -639,14 +639,33 @@ if __name__ == '__main__':
         char_list = set(load_simplewordlist('wordlist/zhs_chars_7000.txt'))
         char_list.add('〇')
         freq1, freq2 = load_wordlist('wordlist/bigramfreq_zhs.txt', char_list)
-        additional_list = load_simplewordlist('wordlist/pinyin.txt')
-    else:
+        #additional_list = load_simplewordlist('wordlist/pinyin.txt')
+    elif sys.argv[1] == 'zht':
         char_list = set(load_simplewordlist('wordlist/zht_chars_7000.txt'))
         char_list.add('〇')
         freq1, freq2 = load_wordlist('wordlist/bigramfreq_zht.txt', char_list)
-        # disable bopomofo, use diacritics in pinyin
+        # disable bopomofo and pinyin
         #additional_list = load_simplewordlist('wordlist/bopomofo.txt')
-        additional_list = load_simplewordlist('wordlist/pinyin.txt')
+        #additional_list = load_simplewordlist('wordlist/pinyin.txt')
+    else:
+        char_list = set(load_simplewordlist('wordlist/zh_all_chars.txt'))
+        char_list.add('〇')
+        freq1, freq2 = load_wordlist('wordlist/bigramfreq_zhs.txt', char_list)
+        tfreq1, tfreq2 = load_wordlist('wordlist/bigramfreq_zht.txt', char_list)
+        for word, freq in tfreq1.items():
+            if word in freq1:
+                freq1[word] = (freq1[word] + freq) / 2
+            else:
+                freq1[word] = freq
+        for word1, tfreqs in tfreq2.items():
+            freqs = dict(freq2.get(word1, ()))
+            for word2, freq in tfreqs:
+                if word2 in freqs:
+                    freqs[word2] = (freqs[word2] + freq) / 2
+                else:
+                    freqs[word2] = freq
+            freq2[word1] = list(freqs.items())
+    additional_list = []
     eng_words = load_simplewordlist('wordlist/google-10000-english.txt')
     tg = TextGenerator(freq1, freq2, additional_list, eng_words)
     text = tg.generate_text(250000)

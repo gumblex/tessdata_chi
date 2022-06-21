@@ -15,14 +15,42 @@ import collections
 #os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 #os.environ["NUMEXPR_NUM_THREADS"] = "1"
 
+import umap
 import numpy as np
 import sklearn.cluster
 
 
 random.seed(64)
 
+MAX_CHAR = 50
 DIMENSION = 4
 NUM_CODE = 26
+
+
+CJK_RANGES = (
+    (0x2E80, 0x2EFF),  # CJK Radicals Supplement
+    (0x2F00, 0x2FDF),  # Kangxi Radicals
+    (0x31C0, 0x31EF),  # CJK Strokes
+    (0x3400, 0x4DBF),  # CJK Unified Ideographs Extension A
+    (0x4E00, 0x9FFF),  # CJK Unified Ideographs
+    (0x20000, 0x2A6DF),  # CJK Unified Ideographs Extension B
+    (0x2A700, 0x2B73F),  # CJK Unified Ideographs Extension C
+    (0x2B740, 0x2B81F),  # CJK Unified Ideographs Extension D
+    (0x2B820, 0x2CEAF),  # CJK Unified Ideographs Extension E
+    (0x2CEB0, 0x2EBEF),  # CJK Unified Ideographs Extension F
+    (0x30000, 0x3134F),  # CJK Unified Ideographs Extension G
+)
+
+
+def transform_cjk_label(code: int):
+    # code = ord(char)
+    label = 0
+    for x, y in CJK_RANGES:
+        if x <= code <= y:
+            label += code - x
+            break
+        label += y - x + 1
+    return label
 
 
 def save_arr(cur, name, data):
@@ -40,12 +68,60 @@ def load_arr(cur, name):
     return np.load(buf)
 
 
+def img_reduce_dim(cur):
+    print("Load images...", file=sys.stderr)
+    cur.execute("""
+        SELECT font, count(DISTINCT ch) num
+        FROM char_image
+        GROUP BY font ORDER BY num DESC
+    """)
+    fonts = {}
+    for font, num in cur:
+        fonts[font] = num
+    cur.execute("""
+        SELECT ch, font, img FROM char_image ORDER BY ch, font
+    """)
+    buf = io.BytesIO()
+    labels = []
+    for char, group in itertools.groupby(cur, key=lambda x: x[0]):
+        imgs = [row[1:] for row in group]
+        if len(imgs) > MAX_CHAR:
+            imgs.sort(key=lambda x: fonts[x[0]], reverse=True)
+            imgs_a = imgs[:MAX_CHAR//2]
+            imgs_b = imgs[MAX_CHAR//2:]
+            random.shuffle(imgs_b)
+            imgs = imgs_a + imgs_b[:(MAX_CHAR-len(imgs_a))]
+        for row in imgs:
+            buf.write(row[1])
+            labels.append(ord(char))
+    arr = np.frombuffer(buf.getvalue(), dtype='u1').reshape((len(labels), 24*24))
+    labels_y = np.array(list(map(transform_cjk_label, labels)))
+    print(arr.shape, len(labels), file=sys.stderr)
+    del buf
+    print("UMAP...", file=sys.stderr)
+    um = umap.UMAP(
+        n_neighbors=min(MAX_CHAR, 50), n_components=DIMENSION, min_dist=0.1,
+        n_epochs=500, low_memory=True, verbose=True)
+    arr4 = um.fit_transform(arr, y=labels_y)
+    return arr4, np.array(labels, dtype='i4')
+
+
 def kmeans_optimize(dbname):
     db = sqlite3.connect(dbname)
     cur = db.cursor()
-    print('Loading...')
-    arr4 = load_arr(cur, 'train_x_4d')
-    labels = load_arr(cur, 'train_y')
+    print('Reduce dim...')
+    cur.execute("CREATE TABLE IF NOT EXISTS train_data ("
+        "name TEXT PRIMARY KEY,"
+        "data BLOB"
+    ")")
+    try:
+        arr4 = load_arr(cur, 'train_x_%dd' % DIMENSION)
+        labels = load_arr(cur, 'train_y')
+    except KeyError:
+        arr4, labels = img_reduce_dim(cur)
+        save_arr(cur, 'train_x_%dd' % DIMENSION, arr4)
+        save_arr(cur, 'train_y', labels)
+        db.commit()
 
     print(arr4.shape, arr4.dtype)
     print('KMeans...')

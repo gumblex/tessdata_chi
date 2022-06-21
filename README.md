@@ -11,12 +11,13 @@ The training fonts includes commonly used fonts for the four font styles:
 * Kai
 * FangSong
 
-The packs also supports Pinyin (chi_sim) and Bopomofo (chi_tra) characters.
-
 Currently there are data packs for:
 
 * chi_sim: Simplified Chinese (China)
 * chi_tra: Traditional Chinese (HK style, TW style, Traditional style)
+* chi_all: Combined Simplified and Traditional Chinese (CN, HK, TW, Traditional style)
+
+The LSTM packs also supports Pinyin (chi_sim) and Bopomofo (chi_tra) characters.
 
 # Usage
 
@@ -45,14 +46,15 @@ Tesseract OCR 中文模型
 
 比官方更准确的 Tesseract 中文模型。
 
-训练集包括常用的宋体、黑体、楷体和仿宋，同时训练了英文短句，并支持拼音字母和注音符号（仅繁体 LSTM 模型）。
+训练集包括常用的宋体、黑体、楷体和仿宋，同时训练了英文短句。其中 LSTM 模型支持拼音字母和注音符号。
 
 目前提供以下模型包：
 
-* chi_sim：v3 版传统模型和 LSTM 模型，支持大陆写法字体
-* chi_tra：v3 版传统模型和 LSTM 模型，支持台湾、香港、传承、大陆写法字体
+* chi_sim：简体，v3 版传统模型（7000字）和 LSTM 模型（8000字），支持大陆写法字体
+* chi_tra：繁体，v3 版传统模型（7000字）和 LSTM 模型（8000字），支持台湾、香港、传承、大陆写法字体
+* chi_all：简繁通用，v3 版传统模型（8000字）和 LSTM 模型（10000字），支持大陆、台湾、香港、传承写法字体
 
-简繁字符集各支持 8000 多个字、标点符号，覆盖《通用规范汉字表》最常用的部分（去除了 Unicode BMP 之外的扩展字符），以及该表中没有的常用汉字。
+字符集覆盖常用标点符号、〇、《通用规范汉字表》以及其他字表最常用的部分（按字频、去除了 Unicode BMP 之外的扩展字符），以及规范字表中没有的其他常用汉字。
 
 # 用法
 

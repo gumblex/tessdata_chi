@@ -32,6 +32,18 @@ re_fwspace_right = re.compile(r'\s+([）’”〉》」』】〕]+)')
 re_fwspace_mid = re.compile(r'\s+([·、。々！，：；？—…]+)\s+')
 re_allpuncts = re.compile(r'[%s ]+' % re.escape(''.join(sorted(set(ALL_PUNCTS)))))
 
+RE_WS_IN_FW = re.compile(
+    r'([‘’“”…─\u2e80-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff'
+    '\uf900-\ufaff\ufe30-\ufe57\uff00-\uffef\U00020000-\U0002A6DF'
+    '\U0002A700-\U0002EBEF\U00030000-\U0003134F'
+    '\U0002F800-\U0002FA1F])\s+(?=[‘’“”…\u2e80-\u312f\u3200-\u32ff'
+    '\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\ufe30-\ufe57\uff00-\uffef'
+    '\U00020000-\U0002A6DF\U0002A700-\U0002EBEF'
+    '\U00030000-\U0003134F\U0002F800-\U0002FA1F])')
+
+detokenize = lambda s: RE_WS_IN_FW.sub(r'\1', s)
+
+
 random.seed(12345)
 
 class CJKTextWrapper(textwrap.TextWrapper):
@@ -113,7 +125,7 @@ if __name__ == '__main__':
             continue
         if '??' in long_ln:
             continue
-        long_ln = re_space.sub(' ', long_ln)
+        long_ln = detokenize(re_space.sub(' ', long_ln))
         long_ln = re_fwspace_mid.sub(r'\1', long_ln)
         long_ln = re_fwspace_left.sub(r'\1', long_ln)
         long_ln = re_fwspace_right.sub(r'\1', long_ln)
@@ -175,7 +187,10 @@ if __name__ == '__main__':
                 if result_length in lengths:
                     lengths.remove(result_length)
                     has_unseen = True
-            if has_unseen or random.random() < 0.0015:
+            unique_ratio = len(set(result_line)) / result_length
+            if (has_unseen or
+                # or random.random() < 0.0015):
+                result_length >= 40 and random.random() < 0.005 * unique_ratio):
                 result_charonly = re_allpuncts.sub('', result_line)
                 if result_charonly in seen_lines:
                     continue
